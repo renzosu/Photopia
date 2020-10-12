@@ -1,11 +1,24 @@
-# My Personal Project
+# Photo Album Viewer
 
-## A subtitle
+## Introduction
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
+This is a personal project with the intent of creating a useful application. 
 
-An example of text with **bold** and *italic* fonts.  Note that the IntelliJ markdown previewer doesn't seem to render 
-the bold and italic fonts correctly but they will appear correctly on GitHub.
+a. The application will allow you to:
+- view photos
+- add photos
+- delete photos
+
+b. The application will be available for anybody to use. 
+
+c. This project is of interest to me because it enables me to apply the skills I have *learned* in class into something **new**.
+
+## User Stories
+
+In the context of a photo album viewer application:
+
+- As a user, I want to be able to add a photo to my album.
+- As a user, I want to be able to delete a photo from my album.
+- As a user, I want to be able to view the next photo on my album.
+- As a user, I want to be able to view the previous photo on my album.
+- As a user, I want to be able to see the number of photos in my album.
