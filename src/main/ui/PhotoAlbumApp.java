@@ -30,7 +30,7 @@ public class PhotoAlbumApp {
 
         init();
 
-        System.out.println("\nWelcome to your photo album experience. Have a nice stay!");
+        System.out.println("\nWelcome to your photo album experience. Have a wonderful stay!");
 
         while (keepGoing) {
             displayMenu();
