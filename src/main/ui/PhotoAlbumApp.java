@@ -30,6 +30,8 @@ public class PhotoAlbumApp {
 
         init();
 
+        System.out.println("\nWelcome to your photo album experience. Have a nice stay!");
+
         while (keepGoing) {
             displayMenu();
             command = input.next();
@@ -42,7 +44,7 @@ public class PhotoAlbumApp {
             }
         }
 
-        System.out.println("\nGoodbye! Come look at more photos next time.");
+        System.out.println("\nThank you. See you next time!");
     }
 
     // MODIFIES: this
@@ -81,7 +83,7 @@ public class PhotoAlbumApp {
 
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
-        System.out.println("\nSelect from:");
+        System.out.println("\nPlease select from the following options:");
         System.out.println("\tn -> next");
         System.out.println("\tp -> previous");
         System.out.println("\ts -> size");
