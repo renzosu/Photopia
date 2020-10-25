@@ -5,93 +5,96 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
+/**
+ * Tests for the Album class
+ */
 class AlbumTest {
-    Album a1;
+    Album albumGetIndex;
+    Album albumAddPhoto;
+    Album albumRemovePhoto;
+    Album albumPrevPhoto;
+    Album albumSizeAlbum;
+    Album albumGetPhotoByName;
+    Album albumNextPhoto;
+
     Photo p1;
     Photo p2;
     Photo p3;
     Photo p4;
-    ArrayList<Photo> album;
 
     @BeforeEach
     void runBefore() {
-        album = new ArrayList<>();
-        a1 = new Album();
+        albumGetIndex = new Album();
+        albumAddPhoto = new Album();
+        albumRemovePhoto = new Album();
+        albumPrevPhoto = new Album();
+        albumSizeAlbum = new Album();
+        albumGetPhotoByName = new Album();
+        albumNextPhoto = new Album();
+
         p1 = new Photo("Apples");
         p2 = new Photo("Bananas");
         p3 = new Photo("Cherries");
-        album.add(p1);
-        album.add(p2);
-        album.add(p3);
-        album.remove(p3);
-        a1.addPhoto(p1);
-        a1.addPhoto(p2);
-        a1.addPhoto(p3);
-        a1.removePhoto(p3);
-        a1.addPhoto(p3);
     }
-
-    @Test
-    void getPhoto() {
-
-        assertEquals(p1, album.get(album.indexOf(p1)));
-    }
-
-    @Test
-    void getPhotos() {
-        ArrayList<Photo> album2 = new ArrayList<>();
-        album2.add(p1);
-        album2.add(p2);
-        album2.add(p3);
-        assertEquals(album2, a1.getAlbum());
-    }
-
 
     @Test
     void testGetIndex() {
-        assertEquals(0, album.indexOf(p1));
-        assertEquals(1, a1.getIndex(p2));
+        albumGetIndex.addPhoto(p1);
+        albumGetIndex.addPhoto(p2);
+        albumGetIndex.addPhoto(p3);
+        assertEquals(0, albumGetIndex.getIndex(p1));
+        assertEquals(1, albumGetIndex.getIndex(p2));
+        assertEquals(2, albumGetIndex.getIndex(p3));
     }
 
     @Test
     void testAddPhoto() {
-       assertTrue(album.contains(p1));
+        assertEquals(0, albumAddPhoto.sizeAlbum());
+        albumAddPhoto.addPhoto(p1);
+        assertEquals(1, albumAddPhoto.sizeAlbum());
     }
 
     @Test
     void testRemovePhoto() {
-        assertFalse(album.contains(p3));
-        assertTrue(album.contains(p1));
-        assertEquals(true, a1.removePhoto(p3));
-        assertEquals(false, a1.removePhoto(p4));
-
+        assertFalse(albumRemovePhoto.removePhoto(p1));
+        albumRemovePhoto.addPhoto(p1);
+        albumRemovePhoto.addPhoto(p2);
+        albumRemovePhoto.removePhoto(p1);
+        assertEquals(1, albumRemovePhoto.sizeAlbum());
+        assertFalse(albumRemovePhoto.removePhoto(p4));
     }
 
     @Test
     void testNextPhoto() {
-        assertEquals(p2, a1.nextPhoto(p1));
-        assertEquals(p3, a1.nextPhoto(p2));
-        assertEquals(p3, a1.nextPhoto(p3));
+        albumNextPhoto.addPhoto(p1);
+        albumNextPhoto.addPhoto(p2);
+        albumNextPhoto.addPhoto(p3);
+        assertEquals(p2, albumNextPhoto.nextPhoto(p1));
+        assertEquals(p3, albumNextPhoto.nextPhoto(p2));
+        assertEquals(p3, albumNextPhoto.nextPhoto(p3));
     }
 
     @Test
     void testPrevPhoto() {
-        assertEquals(p1, a1.prevPhoto(p1));
-        assertEquals(p1, a1.prevPhoto(p2));
-        assertEquals(p2, a1.prevPhoto(p3));
+        albumPrevPhoto.addPhoto(p1);
+        albumPrevPhoto.addPhoto(p2);
+        albumPrevPhoto.addPhoto(p3);
+        assertEquals(p1, albumPrevPhoto.prevPhoto(p1));
+        assertEquals(p1, albumPrevPhoto.prevPhoto(p2));
+        assertEquals(p2, albumPrevPhoto.prevPhoto(p3));
     }
 
     @Test
     void testSizeAlbum() {
-        assertEquals(3, a1.sizeAlbum());
+        assertEquals(0, albumSizeAlbum.sizeAlbum());
+        albumSizeAlbum.addPhoto(p1);
+        assertEquals(1, albumSizeAlbum.sizeAlbum());
     }
 
     @Test
     void testGetPhotoByName() {
-        assertEquals(p1, album.get(album.indexOf(p1)));
-        assertEquals(null, a1.getPhotoByName("Cake"));
-        assertEquals(p1, a1.getPhotoByName("Apples"));
+        assertEquals(null, albumGetPhotoByName.getPhotoByName("Cake"));
+        albumGetPhotoByName.addPhoto(p1);
+        assertEquals(p1, albumGetPhotoByName.getPhotoByName("Apples"));
     }
 }

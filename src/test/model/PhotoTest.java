@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the Photo class
+ */
 public class PhotoTest {
     Photo p1;
     Photo p2;
@@ -12,26 +15,26 @@ public class PhotoTest {
 
     @BeforeEach
     void runBefore() {
-        p1 = new Photo("apples");
-        p2 = new Photo("bananas");
-        p3 = new Photo("cherries");
+        p1 = new Photo("Apples");
+        p2 = new Photo("Bananas");
+        p3 = new Photo("Cherries");
     }
 
     @Test
     void testConstructor() {
-        assertEquals("apples", p1.getName());
+        assertEquals("Apples", p1.getName());
     }
 
     @Test
     void testGetName() {
-        assertEquals(p1.getName(), "apples");
-        assertEquals(p2.getName(), "bananas");
-        assertEquals(p3.getName(), "cherries");
+        assertEquals(p1.getName(), "Apples");
+        assertEquals(p2.getName(), "Bananas");
+        assertEquals(p3.getName(), "Cherries");
     }
 
     @Test
     void testEquals() {
-        Photo p = new Photo("apples");
+        Photo p = new Photo("Apples");
         assertTrue(p1.equals(p));
         assertFalse(p2.equals(p));
     }

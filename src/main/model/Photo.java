@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Represents a photo having a name
+ * Represents a photo having a name.
  */
 
 public class Photo {

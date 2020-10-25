@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
-
+/**
+ * Represents an album of photos.
+ */
 public class Album {
     private final ArrayList<Photo> album;
 
