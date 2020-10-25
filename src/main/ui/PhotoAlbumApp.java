@@ -2,23 +2,39 @@ package ui;
 
 import model.Album;
 import model.Photo;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * Photo Album application
+ * Modelled based on TellerApp https://github.students.cs.ubc.ca/CPSC210/TellerApp
  */
 
 public class PhotoAlbumApp {
+    private static final String JSON_STORE = "./data/workroom.json";
+    private Scanner input;
+
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
     private Album album;
     private Photo photo1;
     private Photo photo2;
     private Photo photo3;
     Photo displayedPhoto;
-    private Scanner input;
 
     // EFFECTS: runs the photoAlbum application
-    public PhotoAlbumApp() {
+    public PhotoAlbumApp() throws FileNotFoundException {
+        input = new Scanner(System.in);
+        album = new Album();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runPhotoAlbum();
     }
 
@@ -27,10 +43,12 @@ public class PhotoAlbumApp {
     private void runPhotoAlbum() {
         boolean keepGoing = true;
         String command = null;
+        input = new Scanner(System.in);
 
         init();
 
         System.out.println("\nWelcome to your photo album experience. Have a wonderful stay!");
+        reminderToLoad();
 
         while (keepGoing) {
             displayMenu();
@@ -38,6 +56,7 @@ public class PhotoAlbumApp {
             command = command.toLowerCase();
 
             if (command.equals("q")) {
+                reminderToSave();
                 keepGoing = false;
             } else {
                 processCommand(command);
@@ -60,6 +79,10 @@ public class PhotoAlbumApp {
             doAdd();
         } else if (command.equals("r")) {
             doRemove();
+        } else if (command.equals("k")) {
+            saveAlbum();
+        } else if (command.equals("l")) {
+            loadAlbum();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -89,6 +112,8 @@ public class PhotoAlbumApp {
         System.out.println("\ts -> size");
         System.out.println("\ta -> add");
         System.out.println("\tr -> remove");
+        System.out.println("\tk -> save album to file");
+        System.out.println("\tl -> load album from file");
         System.out.println("\tq -> quit");
     }
 
@@ -151,4 +176,59 @@ public class PhotoAlbumApp {
             System.out.print("Photo does not exist in album.");
         }
     }
+
+
+    // EFFECTS: saves the album to file
+    private void saveAlbum() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(album);
+            jsonWriter.close();
+            System.out.println("Saved album to" + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads album from file
+    private void loadAlbum() {
+        try {
+            album = jsonReader.read();
+            System.out.println("Loaded from" + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+    private void reminderToSave() {
+        System.out.println("Would you like to save your album? Enter y/n");
+        String answer = input.next();
+
+        if (answer.equals("y")) {
+            System.out.println("Preparing to save...");
+            saveAlbum();
+        } else if (answer.equals("n")) {
+            System.out.println("Continuing without saving...");
+        } else {
+            System.out.println("Incorrect input.");
+            reminderToSave();
+        }
+    }
+
+    private void reminderToLoad() {
+        System.out.println("Would you like to load a saved album? Enter y/n");
+        String answer = input.next();
+
+        if (answer.equals("y")) {
+            System.out.println("Preparing to load...");
+            loadAlbum();
+        } else if (answer.equals("n")) {
+            System.out.println("Starting a preset album...");
+        } else {
+            System.out.println("Incorrect input.");
+            reminderToLoad();
+        }
+    }
+
 }

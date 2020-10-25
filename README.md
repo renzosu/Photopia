@@ -23,6 +23,6 @@ In the context of a photo album viewer application:
 - As a user, I want to be able to view the previous photo on my album.
 - As a user, I want to be able to see the number of photos in my album.
 - As a user, I want to be able to save my album to file.
-- As a user, I want to be able to be able to load my album from file.
-- As a user, I want to be reminded and given the option to save my album to file when I quit.
-- As a user, I want to be given the option to load my album from file when I start the application.
+- As a user, I want to be able to load my album from file.
+- As a user, I want to be asked if I want to save my album to file when I quit.
+- As a user, I want to be asked if I want to load my album from file when I start.
