@@ -40,14 +40,14 @@ public class PhotoTest {
         assertFalse(p2.equals(p));
     }
 
-    @Test
-    void testToJson() {
-        JSONObject json = new JSONObject();
-        String name = new String();
-
-        json.put("Apples", name);
-        assertEquals(json, p1.toJson());
-    }
+//    @Test
+//    void testToJson() {
+//        JSONObject json = new JSONObject();
+//        String name = new String();
+//
+//        json.put("Apples", name);
+//        assertEquals(json, p1.toJson());
+//    }
 }
 
 
