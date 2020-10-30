@@ -8,7 +8,6 @@ import persistence.JsonWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -47,7 +46,7 @@ public class PhotoAlbumApp {
 
         init();
 
-        System.out.println("\nWelcome to your photo album experience. Have a wonderful stay!");
+        System.out.println("\nWelcome to your photo album experience. Have a wonderful stay!\n");
         reminderToLoad();
 
         while (keepGoing) {
@@ -230,5 +229,4 @@ public class PhotoAlbumApp {
             reminderToLoad();
         }
     }
-
 }

@@ -3,6 +3,7 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
+import java.io.*;
 
 import java.util.ArrayList;
 
@@ -97,7 +98,7 @@ public class Album implements Writable {
     }
 
     // EFFECTS: returns photos in this album as a JSON array
-    private JSONArray photosToJson() {
+    public JSONArray photosToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Photo p : photos) {

@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 /**
  * Represents a photo having a name.
  */
@@ -23,8 +25,24 @@ public class Photo implements Writable {
 
     @Override
     public boolean equals(Object o) {
-        Photo p = (Photo) o;
-        return p.name.equals(this.name);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Photo photo = (Photo) o;
+        return name.equals(photo.name);
+    }
+
+//    public boolean equals(Object o) {
+//        Photo p = (Photo) o;
+//        return p.name.equals(this.name);
+//    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
 

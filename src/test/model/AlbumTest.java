@@ -2,20 +2,31 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+
+import java.util.ArrayList;
 
 /**
  * Tests for the Album class
  */
 class AlbumTest {
+    //private ArrayList<Photo> photos;
+
     Album albumGetIndex;
     Album albumAddPhoto;
     Album albumRemovePhoto;
+    Album albumNextPhoto;
     Album albumPrevPhoto;
     Album albumSizeAlbum;
     Album albumGetPhotoByName;
-    Album albumNextPhoto;
+    Album albumToJson;
+    Album albumPhotosToJson;
 
     Photo p1;
     Photo p2;
@@ -27,10 +38,13 @@ class AlbumTest {
         albumGetIndex = new Album();
         albumAddPhoto = new Album();
         albumRemovePhoto = new Album();
+        albumNextPhoto = new Album();
         albumPrevPhoto = new Album();
         albumSizeAlbum = new Album();
         albumGetPhotoByName = new Album();
-        albumNextPhoto = new Album();
+        albumToJson = new Album();
+        albumPhotosToJson = new Album();
+
 
         p1 = new Photo("Apples");
         p2 = new Photo("Bananas");

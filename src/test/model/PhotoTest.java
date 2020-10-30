@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,6 +38,15 @@ public class PhotoTest {
         Photo p = new Photo("Apples");
         assertTrue(p1.equals(p));
         assertFalse(p2.equals(p));
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = new JSONObject();
+        String name = new String();
+
+        json.put("Apples", name);
+        assertEquals(json, p1.toJson());
     }
 }
 

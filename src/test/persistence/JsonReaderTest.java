@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * JsonReaderTest
+ * Modelled based on TellerApp https://github.students.cs.ubc.ca/CPSC210/TellerApp
+ */
+
 public class JsonReaderTest extends JsonTest {
 
     @Test
