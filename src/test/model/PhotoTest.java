@@ -43,9 +43,14 @@ public class PhotoTest {
 
     @Test
     void testHashCode() {
+        Photo p9;
+        p9 = new Photo("Apples");
+        assertEquals(p9.hashCode(), p1.hashCode());
+
         assertEquals(1967772824, p1.hashCode());
         assertEquals(1327314349, p2.hashCode());
         assertEquals(1615603766, p3.hashCode());
+        assertEquals(1967772824, p9.hashCode());
     }
 
 
