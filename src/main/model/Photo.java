@@ -41,9 +41,9 @@ public class Photo implements Writable {
 //    }
 
     @Override
-//    public int hashCode() {
-//        return Objects.hash(name);
-//    }
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 
 
     // TODO: possible feature to add
