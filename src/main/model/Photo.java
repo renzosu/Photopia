@@ -22,19 +22,21 @@ public class Photo implements Writable {
         return name;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-////        if (o == null || getClass() != o.getClass()) {
-////            return false;
-//        }
         Photo photo = (Photo) o;
-        return name.equals(photo.name);
+        return Objects.equals(name, photo.name);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    /**
 //    public boolean equals(Object o) {
 //        Photo p = (Photo) o;
 //        return p.name.equals(this.name);
@@ -44,6 +46,7 @@ public class Photo implements Writable {
     public int hashCode() {
         return Objects.hash(name);
     }
+    */
 
 
     // TODO: possible feature to add

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 /**
  * Tests for the Photo class
  */
@@ -39,6 +40,15 @@ public class PhotoTest {
         assertTrue(p1.equals(p));
         assertFalse(p2.equals(p));
     }
+
+    @Test
+    void testHashCode() {
+        assertEquals(1967772824, p1.hashCode());
+        assertEquals(1327314349, p2.hashCode());
+        assertEquals(1615603766, p3.hashCode());
+    }
+
+
 
 //    @Test
 //    void testToJson() {
