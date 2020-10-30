@@ -28,9 +28,9 @@ public class Photo implements Writable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+////        if (o == null || getClass() != o.getClass()) {
+////            return false;
+//        }
         Photo photo = (Photo) o;
         return name.equals(photo.name);
     }
@@ -41,9 +41,9 @@ public class Photo implements Writable {
 //    }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
+//    public int hashCode() {
+//        return Objects.hash(name);
+//    }
 
 
     // TODO: possible feature to add
