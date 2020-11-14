@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
     public class PhotoPanel extends JPanel {
 
         private Photo selectedPhoto;
-        public Photo photo;
+        private Photo displayedPhoto;
 
         private JPanel imagePanel = new JPanel();
         private JPanel infoPanel = new JPanel();
@@ -137,7 +137,7 @@ public class MainFrame extends JFrame {
             scrollPane.setBackground(Color.WHITE);
             add(scrollPane, BorderLayout.CENTER);
 
-            selectPhoto(photo);
+            selectPhoto(displayedPhoto);
 
             //!!!!!!!!!!!!!;
             //selectPhoto(album.getPhotoByName("1"));
@@ -191,7 +191,8 @@ public class MainFrame extends JFrame {
             btnPrev.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    selectedPhoto = album.prevPhoto(photo);
+                    displayedPhoto = album.prevPhoto(displayedPhoto);
+                    selectedPhoto = displayedPhoto;
                     //selectPhoto(photo);
                 }
             });
@@ -203,7 +204,7 @@ public class MainFrame extends JFrame {
             btnNext.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    photo = album.nextPhoto(photo);
+                    selectedPhoto = album.nextPhoto(displayedPhoto);
                     //photoPanel.selectPhoto(photo);
                     //selectPhoto(photo);
                 }
