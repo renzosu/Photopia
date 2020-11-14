@@ -3,7 +3,6 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
-import java.io.*;
 
 import java.util.ArrayList;
 
@@ -107,4 +106,15 @@ public class Album implements Writable {
 
         return jsonArray;
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Album(" + name + ")";
+    }
+
 }

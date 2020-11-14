@@ -3,14 +3,26 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
  * Represents a photo having a name.
  */
-
 public class Photo implements Writable {
     private final String name;
+
+    // Information about where we keep the photos
+    private static final String PICTURES_DIRECTORY = "photos";
+    private static final String PHOTO_FILE_TYPE = ".jpg";
+    private static final String PROJECT_DIRECTORY_PATH = System.getProperty("user.dir");
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
+    private BufferedImage image;
 
     // REQUIRES: photoName has a non-zero length
     // EFFECTS: name is set to photoName
@@ -37,26 +49,30 @@ public class Photo implements Writable {
     }
 
     /**
-//    public boolean equals(Object o) {
-//        Photo p = (Photo) o;
-//        return p.name.equals(this.name);
-//    }
+     * Read the photo in based on its name.
+     */
+    public void loadPhoto() {
+
+        try {
+            image = ImageIO.read(new File(PROJECT_DIRECTORY_PATH
+                    + FILE_SEPARATOR + PICTURES_DIRECTORY
+                    + FILE_SEPARATOR + name + PHOTO_FILE_TYPE));
+        } catch (IOException ioe) {
+            // Silent in base version
+        }
+    }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(name);
+    public String toString() {
+        return "Photo(" + name + ")";
     }
-    */
 
-
-    // TODO: possible feature to add
-    //public String getId() {
-    //    return id;
-    //}
-
-    // TODO: necessary feature to add
-    //instance var for source
-    //string -> file path for source
+    /**
+     * Provide the photo image
+     */
+    public Image getImage()  {
+        return image;
+    }
 
 
     public JSONObject toJson() {
