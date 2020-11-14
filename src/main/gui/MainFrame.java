@@ -54,19 +54,18 @@ public class MainFrame extends JFrame {
     private void populateLibrary() {
 
         try {
-//            Photo photo1 = new Photo("1");
-//            Photo photo2 = new Photo("2");
-//            Photo photo = new Photo("1");
-//            album.addPhoto(photo1);
-//            album.addPhoto(photo2);
-//            photo.loadPhoto();
-
-            Album photos = album;
-            for (int i = 1; i <= 10; i++) {
-                Photo p = new Photo("" + i);
-                p.loadPhoto();
-                album.addPhoto(p);
-            }
+            Photo p1 = new Photo("1");
+            Photo p2 = new Photo("2");
+            Photo p3 = new Photo("3");
+            Photo apple = new Photo("apple");
+            p1.loadPhoto();
+            p2.loadPhoto();
+            p3.loadPhoto();
+            apple.loadPhoto();
+            album.addPhoto(p1);
+            album.addPhoto(p2);
+            album.addPhoto(p3);
+            album.addPhoto(apple);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,17 +125,11 @@ public class MainFrame extends JFrame {
         public PhotoPanel() {
             super(new BorderLayout());
 
-//            Album album = new Album();
-//            Photo photo2 = new Photo("2");
-//            Photo photo3 = new Photo("3");
-//            album.addPhoto(photo2);
-//            album.addPhoto(photo3);
-
             JScrollPane scrollPane = new JScrollPane(imagePanel);
             scrollPane.setBackground(Color.WHITE);
             add(scrollPane, BorderLayout.CENTER);
 
-            selectPhoto(displayedPhoto);
+            //selectPhoto(displayedPhoto);
 
             //!!!!!!!!!!!!!;
             //selectPhoto(album.getPhotoByName("1"));
@@ -191,7 +184,7 @@ public class MainFrame extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     displayedPhoto = album.prevPhoto(displayedPhoto);
-                    selectedPhoto = displayedPhoto;
+                    selectPhoto(displayedPhoto);
                     //selectPhoto(photo);
                 }
             });
@@ -203,7 +196,8 @@ public class MainFrame extends JFrame {
             btnNext.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    selectedPhoto = album.nextPhoto(displayedPhoto);
+                    displayedPhoto = album.nextPhoto(displayedPhoto);
+                    selectPhoto(displayedPhoto);
                     //photoPanel.selectPhoto(photo);
                     //selectPhoto(photo);
                 }
@@ -246,7 +240,7 @@ public class MainFrame extends JFrame {
             imagePanel.requestFocusInWindow();
 
             // Add the image
-            //imagePanel.removeAll();
+            imagePanel.removeAll();
             if (photo != null) {
                 imagePanel.add(new JLabel(new ImageIcon(photo.getImage())));
             } else {
