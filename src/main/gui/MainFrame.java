@@ -54,18 +54,16 @@ public class MainFrame extends JFrame {
     private void populateLibrary() {
 
         try {
-            Photo photo1 = new Photo("1");
-            Photo photo2 = new Photo("2");
+//            Photo photo1 = new Photo("1");
+//            Photo photo2 = new Photo("2");
+//            Photo photo = new Photo("1");
+//            album.addPhoto(photo1);
+//            album.addPhoto(photo2);
+//            photo.loadPhoto();
 
-            Photo photo = new Photo("1");
-
-            album.addPhoto(photo1);
-            album.addPhoto(photo2);
-            photo.loadPhoto();
-
-            Photo[] photos = new Photo[2];
-            for (int i = 1; i <= 2; i++) {
-                Photo p = photos[i - 1] = new Photo("" + i);
+            Album photos = album;
+            for (int i = 1; i <= 10; i++) {
+                Photo p = new Photo("" + i);
                 p.loadPhoto();
                 album.addPhoto(p);
             }
@@ -127,11 +125,12 @@ public class MainFrame extends JFrame {
 
         public PhotoPanel() {
             super(new BorderLayout());
-            Album album = new Album();
-            Photo photo2 = new Photo("2");
-            Photo photo3 = new Photo("3");
-            album.addPhoto(photo2);
-            album.addPhoto(photo3);
+
+//            Album album = new Album();
+//            Photo photo2 = new Photo("2");
+//            Photo photo3 = new Photo("3");
+//            album.addPhoto(photo2);
+//            album.addPhoto(photo3);
 
             JScrollPane scrollPane = new JScrollPane(imagePanel);
             scrollPane.setBackground(Color.WHITE);
