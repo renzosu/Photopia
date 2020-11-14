@@ -18,8 +18,8 @@ import java.io.*;
 
 public class MainFrame extends JFrame {
 
-    private Photo photo;
-    private Album album;
+//    private Photo photo;
+    private Album album = new Album();
 
     // UI components
     private PhotoPanel photoPanel = new PhotoPanel();
@@ -54,7 +54,6 @@ public class MainFrame extends JFrame {
     private void populateLibrary() {
 
         try {
-            album = new Album();
             Photo photo1 = new Photo("1");
             Photo photo2 = new Photo("2");
 
@@ -121,6 +120,7 @@ public class MainFrame extends JFrame {
     public class PhotoPanel extends JPanel {
 
         private Photo selectedPhoto;
+        public Photo photo;
 
         private JPanel imagePanel = new JPanel();
         private JPanel infoPanel = new JPanel();
@@ -128,22 +128,102 @@ public class MainFrame extends JFrame {
         public PhotoPanel() {
             super(new BorderLayout());
             Album album = new Album();
-            Photo photo3 = new Photo("1");
-            album.addPhoto(photo3);
+            Photo photo2 = new Photo("2");
+            Photo photo3 = new Photo("3");
+            album.addPhoto(photo2);
             album.addPhoto(photo3);
 
             JScrollPane scrollPane = new JScrollPane(imagePanel);
             scrollPane.setBackground(Color.WHITE);
             add(scrollPane, BorderLayout.CENTER);
 
-            //11111;
+            selectPhoto(photo);
+
+            //!!!!!!!!!!!!!;
             //selectPhoto(album.getPhotoByName("1"));
             //selectPhoto(album.getPhotos().get(1));
             //photo = album.nextPhoto(photo3);
+            //selectPhoto(photo);
 
-            selectPhoto(photo);
+            JButton btnRemove = getBtnRemove();
+            JButton btnAdd = getBtnAdd();
+            JButton btnNext = getBtnNext(album);
+            JButton btnPrev = getBtnPrev(album);
+            JButton btnSize = getBtnSize(album);
+
+            // Add the components to the panel
+            addComponents(btnRemove, btnAdd, btnNext, btnPrev, btnSize);
+
+            // center everything
+            for (Component c : infoPanel.getComponents()) {
+                ((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+            }
+            infoPanel.setPreferredSize(new Dimension(200, 300));
+            add(infoPanel, BorderLayout.WEST);
+        }
+
+        private void addComponents(JButton btnRemove, JButton btnAdd,
+                                   JButton btnNext, JButton btnPrev, JButton btnSize) {
+
+            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+
+            infoPanel.add(btnNext);
+            infoPanel.add(btnPrev);
+            infoPanel.add(btnAdd);
+            infoPanel.add(btnRemove);
+            infoPanel.add(btnSize);
+        }
+
+        private JButton getBtnSize(Album album) {
+            JButton btnSize = new JButton("View size of album");
+            btnSize.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    album.sizeAlbum();
+                    //selectPhoto(photo);
+                }
+            });
+            return btnSize;
+        }
+
+        private JButton getBtnPrev(Album album) {
+            JButton btnPrev = new JButton("View previous photo");
+            btnPrev.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    selectedPhoto = album.prevPhoto(photo);
+                    //selectPhoto(photo);
+                }
+            });
+            return btnPrev;
+        }
+
+        private JButton getBtnNext(Album album) {
+            JButton btnNext = new JButton("View next photo");
+            btnNext.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    photo = album.nextPhoto(photo);
+                    //photoPanel.selectPhoto(photo);
+                    //selectPhoto(photo);
+                }
+            });
+            return btnNext;
+        }
 
 
+        private JButton getBtnAdd() {
+            JButton btnAdd = new JButton("Add a new photo");
+            btnAdd.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    photoFileChooser.showAddPhotoDialog();
+                }
+            });
+            return btnAdd;
+        }
+
+        private JButton getBtnRemove() {
             JButton btnRemove = new JButton("Remove from album");
             btnRemove.addActionListener(new ActionListener() {
                 @Override
@@ -153,47 +233,7 @@ public class MainFrame extends JFrame {
                     }
                 }
             });
-
-            JButton btnAdd = new JButton("Add a new photo");
-            btnAdd.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    photoFileChooser.showAddPhotoDialog();
-                }
-            });
-
-            JButton btnNext = new JButton("View next photo");
-            btnAdd.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    photo = album.nextPhoto(photo3);
-                    //selectPhoto(photo);
-                }
-            });
-
-            JButton btnPrev = new JButton("View previous photo");
-            btnAdd.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    photo = album.prevPhoto(photo3);
-                    //selectPhoto(photo);
-                }
-            });
-
-
-            // Add the components to the panel
-            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-
-            infoPanel.add(btnNext);
-            infoPanel.add(btnAdd);
-            infoPanel.add(btnRemove);
-
-            // center everything
-            for (Component c : infoPanel.getComponents()) {
-                ((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-            }
-            infoPanel.setPreferredSize(new Dimension(200, 300));
-            add(infoPanel, BorderLayout.WEST);
+            return btnRemove;
         }
 
         /**
@@ -206,7 +246,7 @@ public class MainFrame extends JFrame {
             imagePanel.requestFocusInWindow();
 
             // Add the image
-            imagePanel.removeAll();
+            //imagePanel.removeAll();
             if (photo != null) {
                 imagePanel.add(new JLabel(new ImageIcon(photo.getImage())));
             } else {
