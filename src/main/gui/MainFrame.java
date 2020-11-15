@@ -2,6 +2,8 @@ package gui;
 
 import model.Album;
 import model.Photo;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,8 +20,13 @@ import java.io.*;
 
 public class MainFrame extends JFrame {
 
-//    private Photo photo;
+    // Main album
     private Album album = new Album();
+
+    // Json parts
+    private static final String JSON_STORE = "./photos/workroom.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // UI components
     private PhotoPanel photoPanel = new PhotoPanel();
@@ -31,6 +38,11 @@ public class MainFrame extends JFrame {
      * Create and display the main window.
      */
     public MainFrame() {
+
+        // Initialize Json parts
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         getContentPane()
@@ -41,17 +53,16 @@ public class MainFrame extends JFrame {
 
         setTitle("Personalized Photo Album"); //set title of frame
 
-        populateLibrary();
+        populateAlbum();
 
         setSize(800, 600);
         setVisible(true);
-
     }
 
     /**
-     * Add some test data to the library.
+     * Add some test data to the album.
      */
-    private void populateLibrary() {
+    private void populateAlbum() {
 
         try {
             Photo p1 = new Photo("1");
@@ -88,18 +99,6 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Cleanly adds a photo to the album.
-     * !!!!!!!!!!!!!! not used...
-     */
-    public void addPhoto(Photo photo) {
-        try {
-            album.addPhoto(photo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Cleanly removes a photo from the album.
      */
     public void removePhoto(Photo photo) {
@@ -110,9 +109,8 @@ public class MainFrame extends JFrame {
         }
     }
 
-
     /**
-     * The panel for displaying a photo and managing its associated info
+     * The panel for displaying a photo and buttons
      */
     public class PhotoPanel extends JPanel {
 
@@ -129,22 +127,16 @@ public class MainFrame extends JFrame {
             scrollPane.setBackground(Color.WHITE);
             add(scrollPane, BorderLayout.CENTER);
 
-            //selectPhoto(displayedPhoto);
-
-            //!!!!!!!!!!!!!;
-            //selectPhoto(album.getPhotoByName("1"));
-            //selectPhoto(album.getPhotos().get(1));
-            //photo = album.nextPhoto(photo3);
-            //selectPhoto(photo);
-
             JButton btnRemove = getBtnRemove();
             JButton btnAdd = getBtnAdd();
             JButton btnNext = getBtnNext(album);
             JButton btnPrev = getBtnPrev(album);
             JButton btnSize = getBtnSize(album);
+            JButton btnSave = getBtnSave();
+            JButton btnLoad = getBtnLoad();
 
             // Add the components to the panel
-            addComponents(btnRemove, btnAdd, btnNext, btnPrev, btnSize);
+            addComponents(btnRemove, btnAdd, btnNext, btnPrev, btnSize, btnSave, btnLoad);
 
             // center everything
             for (Component c : infoPanel.getComponents()) {
@@ -155,7 +147,9 @@ public class MainFrame extends JFrame {
         }
 
         private void addComponents(JButton btnRemove, JButton btnAdd,
-                                   JButton btnNext, JButton btnPrev, JButton btnSize) {
+                                   JButton btnNext, JButton btnPrev,
+                                   JButton btnSize, JButton btnSave,
+                                   JButton btnLoad) {
 
             infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
@@ -164,6 +158,42 @@ public class MainFrame extends JFrame {
             infoPanel.add(btnAdd);
             infoPanel.add(btnRemove);
             infoPanel.add(btnSize);
+            infoPanel.add(btnSave);
+            infoPanel.add(btnLoad);
+        }
+
+        private JButton getBtnLoad() {
+            JButton btnLoad = new JButton("Load stored album");
+            btnLoad.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        album = jsonReader.read();
+                        System.out.println("Loaded from" + JSON_STORE);
+                    } catch (IOException exception) {
+                        System.out.println("Unable to read from file: " + JSON_STORE);
+                    }
+                }
+            });
+            return btnLoad;
+        }
+
+        private JButton getBtnSave() {
+            JButton btnSave = new JButton("Save album contents");
+            btnSave.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        jsonWriter.open();
+                        jsonWriter.write(album);
+                        jsonWriter.close();
+                        System.out.println("Saved album to" + JSON_STORE);
+                    } catch (FileNotFoundException exception) {
+                        System.out.println("Unable to write to file: " + JSON_STORE);
+                    }
+                }
+            });
+            return btnSave;
         }
 
         private JButton getBtnSize(Album album) {
@@ -171,8 +201,7 @@ public class MainFrame extends JFrame {
             btnSize.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    album.sizeAlbum();
-                    //selectPhoto(photo);
+                    System.out.print("There are " + album.sizeAlbum() + " photos in the album");
                 }
             });
             return btnSize;
@@ -185,7 +214,6 @@ public class MainFrame extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     displayedPhoto = album.prevPhoto(displayedPhoto);
                     selectPhoto(displayedPhoto);
-                    //selectPhoto(photo);
                 }
             });
             return btnPrev;
@@ -198,8 +226,6 @@ public class MainFrame extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     displayedPhoto = album.nextPhoto(displayedPhoto);
                     selectPhoto(displayedPhoto);
-                    //photoPanel.selectPhoto(photo);
-                    //selectPhoto(photo);
                 }
             });
             return btnNext;
