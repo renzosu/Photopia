@@ -22,6 +22,7 @@ public class MainFrame extends JFrame {
 
     // Main album
     private Album album = new Album();
+    private Album albumJson = new Album();
 
     // Json parts
     private static final String JSON_STORE = "./photos/workroom.json";
@@ -65,6 +66,12 @@ public class MainFrame extends JFrame {
     private void populateAlbum() {
 
         try {
+//            Photo[] photos = new Photo[10];
+//            for (String name : photos) {
+//                photo.loadPhoto();
+//                album.addPhoto(photo);
+//            }
+
             Photo p1 = new Photo("1");
             Photo p2 = new Photo("2");
             Photo p3 = new Photo("3");
@@ -77,6 +84,7 @@ public class MainFrame extends JFrame {
             album.addPhoto(p2);
             album.addPhoto(p3);
             album.addPhoto(apple);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,6 +128,8 @@ public class MainFrame extends JFrame {
         private JPanel imagePanel = new JPanel();
         private JPanel infoPanel = new JPanel();
 
+        private JLabel infoLabel = new JLabel();
+
         public PhotoPanel() {
             super(new BorderLayout());
 
@@ -136,13 +146,16 @@ public class MainFrame extends JFrame {
             JButton btnLoad = getBtnLoad();
 
             // Add the components to the panel
+            infoPanel.add(infoLabel);
             addComponents(btnRemove, btnAdd, btnNext, btnPrev, btnSize, btnSave, btnLoad);
 
             // center everything
             for (Component c : infoPanel.getComponents()) {
                 ((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+                ((JComponent) c).setAlignmentY(Component.CENTER_ALIGNMENT);
             }
-            infoPanel.setPreferredSize(new Dimension(200, 300));
+            infoPanel.setPreferredSize(new Dimension(150, 100));
+            infoPanel.setBackground(Color.white);
             add(infoPanel, BorderLayout.WEST);
         }
 
@@ -163,12 +176,20 @@ public class MainFrame extends JFrame {
         }
 
         private JButton getBtnLoad() {
-            JButton btnLoad = new JButton("Load stored album");
+            JButton btnLoad = new JButton("Load album");
             btnLoad.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        album = jsonReader.read();
+                        album.removeAll();
+                        albumJson = jsonReader.read();
+                        for (Photo photo : albumJson) {
+                            photo.loadPhoto();
+                            System.out.print("There are " + albumJson.sizeAlbum() + " photos in JSON\n");
+                            album.addPhoto(photo);
+                            System.out.print("There are " + album.sizeAlbum() + " photos\n");
+                        }
+
                         System.out.println("Loaded from" + JSON_STORE);
                     } catch (IOException exception) {
                         System.out.println("Unable to read from file: " + JSON_STORE);
@@ -179,7 +200,7 @@ public class MainFrame extends JFrame {
         }
 
         private JButton getBtnSave() {
-            JButton btnSave = new JButton("Save album contents");
+            JButton btnSave = new JButton("Save album");
             btnSave.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -197,18 +218,19 @@ public class MainFrame extends JFrame {
         }
 
         private JButton getBtnSize(Album album) {
-            JButton btnSize = new JButton("View size of album");
+            JButton btnSize = new JButton("Album size");
             btnSize.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.print("There are " + album.sizeAlbum() + " photos in the album");
+                    updateSize(album);
+                    //System.out.print("There are " + album.sizeAlbum());
                 }
             });
             return btnSize;
         }
 
         private JButton getBtnPrev(Album album) {
-            JButton btnPrev = new JButton("View previous photo");
+            JButton btnPrev = new JButton("Last photo");
             btnPrev.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -220,7 +242,7 @@ public class MainFrame extends JFrame {
         }
 
         private JButton getBtnNext(Album album) {
-            JButton btnNext = new JButton("View next photo");
+            JButton btnNext = new JButton("Next photo");
             btnNext.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -233,7 +255,7 @@ public class MainFrame extends JFrame {
 
 
         private JButton getBtnAdd() {
-            JButton btnAdd = new JButton("Add a new photo");
+            JButton btnAdd = new JButton("Add photo");
             btnAdd.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -244,7 +266,7 @@ public class MainFrame extends JFrame {
         }
 
         private JButton getBtnRemove() {
-            JButton btnRemove = new JButton("Remove from album");
+            JButton btnRemove = new JButton("Wipe photo");
             btnRemove.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -276,6 +298,11 @@ public class MainFrame extends JFrame {
             repaint();
             revalidate();
         }
+
+        private void updateSize(Album album) {
+            infoLabel.setText("There are " + album.sizeAlbum() + " photos");
+
+        }
     }
 
     /**
@@ -284,11 +311,11 @@ public class MainFrame extends JFrame {
     private class PhotoFileChooser extends JFileChooser {
 
         public PhotoFileChooser() {
-            JPanel accessory = new JPanel(new BorderLayout());
-            accessory.add(new JLabel("Add to album:"), BorderLayout.NORTH);
-            accessory.setPreferredSize(new Dimension(150, 275));
-            accessory.setBorder(new EmptyBorder(0, 10, 0, 0));
-            setAccessory(accessory);
+//            JPanel accessory = new JPanel(new BorderLayout());
+//            accessory.add(new JLabel("Add to album:"), BorderLayout.NORTH);
+//            accessory.setPreferredSize(new Dimension(150, 275));
+//            accessory.setBorder(new EmptyBorder(0, 10, 0, 0));
+//            setAccessory(accessory);
 
             setMultiSelectionEnabled(true);
             setAcceptAllFileFilterUsed(false);

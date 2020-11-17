@@ -11,7 +11,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        // Enable the native look & feel
+        // Enable a pre-set native look & feel
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {

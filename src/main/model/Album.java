@@ -5,11 +5,12 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Represents an album of photos.
  */
-public class Album implements Writable {
+public class Album implements Writable, Iterable<Photo> {
     private final ArrayList<Photo> photos;
     private String name;
 
@@ -32,6 +33,15 @@ public class Album implements Writable {
     public Boolean removePhoto(Photo photo) {
         if (photos.contains(photo)) {
             this.photos.remove(photo);
+            return true;
+        }
+        return false;
+    }
+
+    // EFFECTS: remove all photos from album
+    public Boolean removeAll() {
+        if (!photos.isEmpty()) {
+            photos.clear();
             return true;
         }
         return false;
@@ -117,4 +127,13 @@ public class Album implements Writable {
         return "Album(" + name + ")";
     }
 
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<Photo> iterator() {
+        return photos.iterator();
+    }
 }
