@@ -6,7 +6,7 @@ public class App {
 
     /**
      * Represents the main window that opens the Photo album app
-     * Modelled based on PhotoAlbumBase
+     * Modelled based on PhotoAlbumBase, https://github.students.cs.ubc.ca/CPSC210/PhotoAlbumBase.git
      */
 
     public static void main(String[] args) {

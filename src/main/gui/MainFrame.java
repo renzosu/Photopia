@@ -6,11 +6,12 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 
 /**
@@ -44,13 +45,28 @@ public class MainFrame extends JFrame {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         getContentPane()
                 .add(new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(
                                 ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
                                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED), photoPanel),
                         BorderLayout.CENTER);
+
+        JFrame frame = new JFrame();
+
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                windowCloseMethod(frame);
+            }
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                windowOpenMethod(frame);
+            }
+        });
 
         setTitle("Personalized Photo Album"); //set title of frame
 
@@ -60,30 +76,48 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
+
+
+    /**
+     * Display a confirmation box for loading album upon starting.
+     */
+    private void windowOpenMethod(JFrame frame) {
+        int result = JOptionPane.showConfirmDialog(frame, "Do you want to load a previous album?");
+        if (result == JOptionPane.OK_OPTION) {
+            photoPanel.loadMethod();
+        }
+    }
+
+    /**
+     * Display a confirmation box for saving album upon cosing.
+     */
+    private void windowCloseMethod(JFrame frame) {
+        int result = JOptionPane.showConfirmDialog(frame, "Do you want to save?");
+        if (result == JOptionPane.OK_OPTION) {
+            photoPanel.saveMethod();
+            setVisible(false);
+            dispose();
+        } else if (result == JOptionPane.NO_OPTION) {
+            setVisible(false);
+            dispose();
+        }
+    }
+
     /**
      * Add some test data to the album.
      */
     private void populateAlbum() {
 
         try {
-//            Photo[] photos = new Photo[10];
-//            for (String name : photos) {
-//                photo.loadPhoto();
-//                album.addPhoto(photo);
-//            }
-
-            Photo p1 = new Photo("1");
-            Photo p2 = new Photo("2");
-            Photo p3 = new Photo("3");
             Photo apple = new Photo("apple");
-            p1.loadPhoto();
-            p2.loadPhoto();
-            p3.loadPhoto();
+            Photo banana = new Photo("banana2553");
+            Photo cherry = new Photo("cherry365");
             apple.loadPhoto();
-            album.addPhoto(p1);
-            album.addPhoto(p2);
-            album.addPhoto(p3);
+            banana.loadPhoto();
+            cherry.loadPhoto();
             album.addPhoto(apple);
+            album.addPhoto(banana);
+            album.addPhoto(cherry);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,7 +133,7 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Display a confirmation box.
+     * Display a confirmation box for removing photo.
      */
     private boolean confirmPopup(String message) {
         return JOptionPane.showConfirmDialog(this, message, "Confirm action",
@@ -180,23 +214,27 @@ public class MainFrame extends JFrame {
             btnLoad.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        album.removeAll();
-                        albumJson = jsonReader.read();
-                        for (Photo photo : albumJson) {
-                            photo.loadPhoto();
-                            System.out.print("There are " + albumJson.sizeAlbum() + " photos in JSON\n");
-                            album.addPhoto(photo);
-                            System.out.print("There are " + album.sizeAlbum() + " photos\n");
-                        }
-
-                        System.out.println("Loaded from" + JSON_STORE);
-                    } catch (IOException exception) {
-                        System.out.println("Unable to read from file: " + JSON_STORE);
-                    }
+                    loadMethod();
                 }
             });
             return btnLoad;
+        }
+
+        private void loadMethod() {
+            try {
+                album.removeAll();
+                albumJson = jsonReader.read();
+                for (Photo photo : albumJson) {
+                    photo.loadPhoto();
+                    //System.out.print("There are " + albumJson.sizeAlbum() + " photos in JSON\n");
+                    album.addPhoto(photo);
+                    //System.out.print("There are " + album.sizeAlbum() + " photos\n");
+                }
+
+                System.out.println("Loaded from" + JSON_STORE);
+            } catch (IOException exception) {
+                System.out.println("Unable to read from file: " + JSON_STORE);
+            }
         }
 
         private JButton getBtnSave() {
@@ -204,17 +242,21 @@ public class MainFrame extends JFrame {
             btnSave.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        jsonWriter.open();
-                        jsonWriter.write(album);
-                        jsonWriter.close();
-                        System.out.println("Saved album to" + JSON_STORE);
-                    } catch (FileNotFoundException exception) {
-                        System.out.println("Unable to write to file: " + JSON_STORE);
-                    }
+                    saveMethod();
                 }
             });
             return btnSave;
+        }
+
+        private void saveMethod() {
+            try {
+                jsonWriter.open();
+                jsonWriter.write(album);
+                jsonWriter.close();
+                System.out.println("Saved album to" + JSON_STORE);
+            } catch (FileNotFoundException exception) {
+                System.out.println("Unable to write to file: " + JSON_STORE);
+            }
         }
 
         private JButton getBtnSize(Album album) {
@@ -253,7 +295,6 @@ public class MainFrame extends JFrame {
             return btnNext;
         }
 
-
         private JButton getBtnAdd() {
             JButton btnAdd = new JButton("Add photo");
             btnAdd.addActionListener(new ActionListener() {
@@ -270,8 +311,10 @@ public class MainFrame extends JFrame {
             btnRemove.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (confirmPopup("Remove photo " + selectedPhoto.getName() + "?")) {
-                        removePhoto(selectedPhoto);
+                    if (!(selectedPhoto == null) && album.sizeAlbum() > 1) {
+                        if (confirmPopup("Remove photo " + selectedPhoto.getName() + "?")) {
+                            removePhoto(selectedPhoto);
+                        }
                     }
                 }
             });
@@ -301,7 +344,6 @@ public class MainFrame extends JFrame {
 
         private void updateSize(Album album) {
             infoLabel.setText("There are " + album.sizeAlbum() + " photos");
-
         }
     }
 
@@ -311,12 +353,6 @@ public class MainFrame extends JFrame {
     private class PhotoFileChooser extends JFileChooser {
 
         public PhotoFileChooser() {
-//            JPanel accessory = new JPanel(new BorderLayout());
-//            accessory.add(new JLabel("Add to album:"), BorderLayout.NORTH);
-//            accessory.setPreferredSize(new Dimension(150, 275));
-//            accessory.setBorder(new EmptyBorder(0, 10, 0, 0));
-//            setAccessory(accessory);
-
             setMultiSelectionEnabled(true);
             setAcceptAllFileFilterUsed(false);
             setApproveButtonText("Add Photos");
