@@ -25,7 +25,7 @@ public class MainFrame extends JFrame {
     private Album album = new Album();
     private Album albumJson = new Album();
 
-    // Json parts
+    // Json parts and storing
     private static final String JSON_STORE = "./photos/workroom.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -37,7 +37,8 @@ public class MainFrame extends JFrame {
     private PhotoFileChooser photoFileChooser = new PhotoFileChooser();
 
     /**
-     * Create and display the main window.
+     * MODIFIES: this
+     * EFFECTS: Create and display the main window.
      */
     public MainFrame() {
 
@@ -68,7 +69,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        setTitle("Personalized Photo Album"); //set title of frame
+        setTitle("Personalized Photo Album");
 
         populateAlbum();
 
@@ -76,10 +77,8 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-
-
     /**
-     * Display a confirmation box for loading album upon starting.
+     * EFFECTS: Display a confirmation box for loading album upon starting app.
      */
     private void windowOpenMethod(JFrame frame) {
         int result = JOptionPane.showConfirmDialog(frame, "Do you want to load a previous album?");
@@ -89,7 +88,7 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Display a confirmation box for saving album upon cosing.
+     * EFFECTS: Display a confirmation box for saving album upon closing app.
      */
     private void windowCloseMethod(JFrame frame) {
         int result = JOptionPane.showConfirmDialog(frame, "Do you want to save?");
@@ -104,7 +103,8 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Add some test data to the album.
+     * MODIFIES: this
+     * EFFECTS: Add some test data (default photos) to the album.
      */
     private void populateAlbum() {
 
@@ -125,7 +125,7 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Display an error message box.
+     * EFFECTS: Display an error message box for adding a photo.
      */
     private void errorPopup(String message) {
         JOptionPane.showMessageDialog(this, message, "Error",
@@ -133,7 +133,7 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Display a confirmation box for removing photo.
+     * EFFECTS: Display a confirmation box for removing a photo.
      */
     private boolean confirmPopup(String message) {
         return JOptionPane.showConfirmDialog(this, message, "Confirm action",
@@ -141,7 +141,9 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Cleanly removes a photo from the album.
+     * REQUIRES: Photo can be removed.
+     * MODIFIES: this
+     * EFFECTS: Cleanly removes a photo from the album.
      */
     public void removePhoto(Photo photo) {
         try {
@@ -179,11 +181,13 @@ public class MainFrame extends JFrame {
             JButton btnSave = getBtnSave();
             JButton btnLoad = getBtnLoad();
 
-            // Add the components to the panel
+            // Add the infoPanel label
             infoPanel.add(infoLabel);
+
+            // Add the components to the panel
             addComponents(btnRemove, btnAdd, btnNext, btnPrev, btnSize, btnSave, btnLoad);
 
-            // center everything
+            // Center everything in the infoPanel
             for (Component c : infoPanel.getComponents()) {
                 ((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
                 ((JComponent) c).setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -193,6 +197,10 @@ public class MainFrame extends JFrame {
             add(infoPanel, BorderLayout.WEST);
         }
 
+        /**
+         * MODIFIES: this
+         * EFFECTS: Add all of the button components.
+         */
         private void addComponents(JButton btnRemove, JButton btnAdd,
                                    JButton btnNext, JButton btnPrev,
                                    JButton btnSize, JButton btnSave,
@@ -200,6 +208,7 @@ public class MainFrame extends JFrame {
 
             infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
+            // Add all the buttons to the side
             infoPanel.add(btnNext);
             infoPanel.add(btnPrev);
             infoPanel.add(btnAdd);
@@ -209,6 +218,9 @@ public class MainFrame extends JFrame {
             infoPanel.add(btnLoad);
         }
 
+        /**
+         * EFFECTS: Create a new button that loads a saved album.
+         */
         private JButton getBtnLoad() {
             JButton btnLoad = new JButton("Load album");
             btnLoad.addActionListener(new ActionListener() {
@@ -220,6 +232,10 @@ public class MainFrame extends JFrame {
             return btnLoad;
         }
 
+        /**
+         * MODIFIES: this
+         * EFFECTS: Loads a saved album.
+         */
         private void loadMethod() {
             try {
                 album.removeAll();
@@ -237,6 +253,9 @@ public class MainFrame extends JFrame {
             }
         }
 
+        /**
+         * EFFECTS: Create a new button that saves the current album.
+         */
         private JButton getBtnSave() {
             JButton btnSave = new JButton("Save album");
             btnSave.addActionListener(new ActionListener() {
@@ -248,6 +267,9 @@ public class MainFrame extends JFrame {
             return btnSave;
         }
 
+        /**
+         * EFFECTS: Saves the current album.
+         */
         private void saveMethod() {
             try {
                 jsonWriter.open();
@@ -259,6 +281,9 @@ public class MainFrame extends JFrame {
             }
         }
 
+        /**
+         * EFFECTS: Create a new button that returns the album size.
+         */
         private JButton getBtnSize(Album album) {
             JButton btnSize = new JButton("Album size");
             btnSize.addActionListener(new ActionListener() {
@@ -271,6 +296,9 @@ public class MainFrame extends JFrame {
             return btnSize;
         }
 
+        /**
+         * EFFECTS: Create a new button that displays the previous photo.
+         */
         private JButton getBtnPrev(Album album) {
             JButton btnPrev = new JButton("Last photo");
             btnPrev.addActionListener(new ActionListener() {
@@ -283,6 +311,9 @@ public class MainFrame extends JFrame {
             return btnPrev;
         }
 
+        /**
+         * EFFECTS: Create a new button that displays the next photo.
+         */
         private JButton getBtnNext(Album album) {
             JButton btnNext = new JButton("Next photo");
             btnNext.addActionListener(new ActionListener() {
@@ -295,6 +326,10 @@ public class MainFrame extends JFrame {
             return btnNext;
         }
 
+        /**
+         * REQUIRES: Photo is valid
+         * EFFECTS: Create a new button that adds a new photo.
+         */
         private JButton getBtnAdd() {
             JButton btnAdd = new JButton("Add photo");
             btnAdd.addActionListener(new ActionListener() {
@@ -306,6 +341,9 @@ public class MainFrame extends JFrame {
             return btnAdd;
         }
 
+        /**
+         * EFFECTS: Create a new button that removes a photo.
+         */
         private JButton getBtnRemove() {
             JButton btnRemove = new JButton("Wipe photo");
             btnRemove.addActionListener(new ActionListener() {
@@ -322,7 +360,8 @@ public class MainFrame extends JFrame {
         }
 
         /**
-         * Display the provided photo in the main image area.
+         * REQUIRES: Album has photos
+         * EFFECTS: Selects the current photo to be displayed
          */
         private void selectPhoto(Photo photo) {
             selectedPhoto = photo;
@@ -342,6 +381,9 @@ public class MainFrame extends JFrame {
             revalidate();
         }
 
+        /**
+         * EFFECTS: Display the updated size of album on top of the buttons.
+         */
         private void updateSize(Album album) {
             infoLabel.setText("There are " + album.sizeAlbum() + " photos");
         }
@@ -375,12 +417,11 @@ public class MainFrame extends JFrame {
         }
 
         /**
-         * Show the dialog to add a photo to the library
+         * EFFECTS: Show the dialog to add a photo to the library
          */
         public void showAddPhotoDialog() {
 
             if (photoFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-
                 for (File file : getSelectedFiles()) {
                     try {
                         Photo photo = new Photo(importPhotoFile(file));
@@ -395,8 +436,7 @@ public class MainFrame extends JFrame {
         }
 
         /**
-         * Given any JPEG image file, returns a name suitable for passing to the
-         * Photo constructor.
+         * EFFECTS: Given any JPEG image file, returns a name suitable for passing to the Photo constructor.
          */
         private String importPhotoFile(File file) throws IOException {
             String name = file.getName().substring(0,

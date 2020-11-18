@@ -79,6 +79,15 @@ class AlbumTest {
     }
 
     @Test
+    void testRemoveAllPhotos() {
+        assertFalse(albumRemovePhoto.removeAll());
+        albumRemovePhoto.addPhoto(p1);
+        albumRemovePhoto.addPhoto(p2);
+        assertTrue(albumRemovePhoto.removeAll());
+        assertEquals(0, albumRemovePhoto.sizeAlbum());
+    }
+
+    @Test
     void testNextPhoto() {
         albumNextPhoto.addPhoto(p1);
         albumNextPhoto.addPhoto(p2);

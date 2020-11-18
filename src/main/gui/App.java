@@ -2,13 +2,15 @@ package gui;
 
 import javax.swing.*;
 
+/**
+ * Represents the main window that opens the photo album App
+ * Modelled based on PhotoAlbumBase, https://github.students.cs.ubc.ca/CPSC210/PhotoAlbumBase.git
+ */
+
 public class App {
-
     /**
-     * Represents the main window that opens the Photo album app
-     * Modelled based on PhotoAlbumBase, https://github.students.cs.ubc.ca/CPSC210/PhotoAlbumBase.git
+     * Runs the photo album App
      */
-
     public static void main(String[] args) {
 
         // Enable a pre-set native look & feel

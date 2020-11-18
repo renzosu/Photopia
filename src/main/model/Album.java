@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Represents an album of photos.
+ * Represents an album: a list of photos
  */
 public class Album implements Writable, Iterable<Photo> {
     private final ArrayList<Photo> photos;

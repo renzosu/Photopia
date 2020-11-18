@@ -4,6 +4,10 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -14,6 +18,12 @@ public class PhotoTest {
     Photo p1;
     Photo p2;
     Photo p3;
+
+    // Information about where we keep the photos
+    private static final String PICTURES_DIRECTORY = "photos";
+    private static final String PHOTO_FILE_TYPE = ".jpg";
+    private static final String PROJECT_DIRECTORY_PATH = System.getProperty("user.dir");
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     @BeforeEach
     void runBefore() {
@@ -53,7 +63,13 @@ public class PhotoTest {
         assertEquals(1967772824, p9.hashCode());
     }
 
-
+    @Test
+    void testLoadPhotoAndGetImage() {
+        BufferedImage image = null;
+        assertEquals(null, p1.getImage());
+        p1.loadPhoto();
+        assertEquals(image, p1.getImage());
+    }
 
 //    @Test
 //    void testToJson() {

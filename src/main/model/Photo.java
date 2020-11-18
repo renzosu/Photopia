@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Represents a photo having a name.
+ * Represents a photo having a name
  */
 public class Photo implements Writable {
     private final String name;
@@ -27,7 +27,7 @@ public class Photo implements Writable {
     // REQUIRES: photoName has a non-zero length
     // EFFECTS: name is set to photoName
     public Photo(String photoName) {
-        name = photoName;
+        this.name = photoName;
     }
 
     public String getName() {
@@ -52,7 +52,6 @@ public class Photo implements Writable {
      * Read the photo in based on its name.
      */
     public void loadPhoto() {
-
         try {
             image = ImageIO.read(new File(PROJECT_DIRECTORY_PATH
                     + FILE_SEPARATOR + PICTURES_DIRECTORY
@@ -74,7 +73,7 @@ public class Photo implements Writable {
         return image;
     }
 
-
+    @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
