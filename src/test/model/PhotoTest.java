@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,7 +72,24 @@ public class PhotoTest {
         assertEquals(image, p1.getImage());
     }
 
-//    @Test
+    @Test
+    void testLoadNothing() {
+        BufferedImage image = null;
+        Photo p5 = null;
+        try {
+            p5.loadPhoto();
+        } catch (Exception e) {
+            //expected.
+        }
+    }
+
+    @Test
+    void testToString() {
+        assertEquals("Photo(" + p1.getName() + ")", p1.toString());
+
+    }
+
+    //    @Test
 //    void testToJson() {
 //        JSONObject json = new JSONObject();
 //        String name = new String();

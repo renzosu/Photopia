@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.sql.Array;
 import java.util.ArrayList;
 
 /**
@@ -119,5 +120,29 @@ class AlbumTest {
         assertEquals(null, albumGetPhotoByName.getPhotoByName("Cake"));
         albumGetPhotoByName.addPhoto(p1);
         assertEquals(p1, albumGetPhotoByName.getPhotoByName("Apples"));
+    }
+
+    @Test
+    void testPhotosToJson() {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(p2.toJson());
+        albumPhotosToJson.addPhoto(p1);
+        assertNotEquals(jsonArray, albumPhotosToJson.photosToJson());
+    }
+
+    @Test
+    void testToJson() {
+        albumToJson.addPhoto(p1);
+        JSONObject json = new JSONObject();
+        json.put("photos", albumToJson.photosToJson());
+        assertNotEquals(json, albumToJson.toJson());
+    }
+
+    @Test
+    void testIterator() {
+        albumAddPhoto.iterator();
+        for (Photo photo: albumAddPhoto) {
+            photo.loadPhoto();
+        }
     }
 }
