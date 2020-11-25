@@ -65,21 +65,29 @@ public class PhotoTest {
     }
 
     @Test
-    void testLoadPhotoAndGetImage() {
-        BufferedImage image = null;
-        assertEquals(null, p1.getImage());
-        p1.loadPhoto();
-        assertEquals(image, p1.getImage());
+    void testLoadIOExceptionNotExpected() {
+        //not expecting an IOException
+        Photo apple = new Photo("apple");
+
+        assertNotNull(apple);
+        try {
+            apple.loadPhoto();
+        } catch (IOException e) {
+            fail("Exception not expected");
+        }
+        assertEquals(apple.getImage(), apple.getImage());
     }
 
     @Test
-    void testLoadNothing() {
-        BufferedImage image = null;
-        Photo p5 = null;
+    void testLoadIOExceptionExpected() {
+        //expecting an IOException
+
+        assertNull(p1.getImage());
         try {
-            p5.loadPhoto();
-        } catch (Exception e) {
-            //expected.
+            p1.loadPhoto();
+            fail("This should not have occurred at all");
+        } catch (IOException e) {
+            //Exception expected
         }
     }
 

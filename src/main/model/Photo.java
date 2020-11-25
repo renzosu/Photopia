@@ -22,6 +22,8 @@ public class Photo implements Writable {
     private static final String PROJECT_DIRECTORY_PATH = System.getProperty("user.dir");
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
+    private Album album;
+
     private BufferedImage image;
 
     // REQUIRES: photoName has a non-zero length
@@ -33,6 +35,10 @@ public class Photo implements Writable {
     public String getName() {
         return name;
     }
+
+//    public Album getAlbum() {
+//        return album;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -51,13 +57,12 @@ public class Photo implements Writable {
     /**
      * Read the photo in based on its name.
      */
-    public void loadPhoto() {
-        try {
-            image = ImageIO.read(new File(PROJECT_DIRECTORY_PATH
+    public void loadPhoto() throws IOException {
+        image = ImageIO.read(new File(PROJECT_DIRECTORY_PATH
                     + FILE_SEPARATOR + PICTURES_DIRECTORY
                     + FILE_SEPARATOR + name + PHOTO_FILE_TYPE));
-        } catch (IOException ioe) {
-            // Silent in base version
+        if (image == null) {
+            throw new IOException();
         }
     }
 

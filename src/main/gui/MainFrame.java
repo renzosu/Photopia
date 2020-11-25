@@ -246,7 +246,6 @@ public class MainFrame extends JFrame {
                     album.addPhoto(photo);
                     //System.out.print("There are " + album.sizeAlbum() + " photos\n");
                 }
-
                 System.out.println("Loaded from" + JSON_STORE);
             } catch (IOException exception) {
                 System.out.println("Unable to read from file: " + JSON_STORE);

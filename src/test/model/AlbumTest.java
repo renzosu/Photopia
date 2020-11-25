@@ -141,8 +141,12 @@ class AlbumTest {
     @Test
     void testIterator() {
         albumAddPhoto.iterator();
-        for (Photo photo: albumAddPhoto) {
-            photo.loadPhoto();
+        for (Photo photo : albumAddPhoto) {
+            try {
+                photo.loadPhoto();
+            } catch (Exception e) {
+                fail("Exception not expected");
+            }
         }
     }
 }

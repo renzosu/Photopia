@@ -15,7 +15,7 @@ import java.util.Scanner;
  * Modelled based on TellerApp https://github.students.cs.ubc.ca/CPSC210/TellerApp
  */
 
-public class PhotoAlbumApp {
+public class UIApp {
     private static final String JSON_STORE = "./data/workroom.json";
     private Scanner input;
 
@@ -23,13 +23,10 @@ public class PhotoAlbumApp {
     private JsonReader jsonReader;
 
     private Album album;
-    private Photo photo1;
-    private Photo photo2;
-    private Photo photo3;
-    Photo displayedPhoto;
+    private Photo displayedPhoto;
 
     // EFFECTS: runs the photoAlbum application
-    public PhotoAlbumApp() throws FileNotFoundException {
+    public UIApp() throws FileNotFoundException {
         input = new Scanner(System.in);
         album = new Album();
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -91,9 +88,9 @@ public class PhotoAlbumApp {
     // MODIFIES: this
     // EFFECTS: initializes photos
     private void init() {
-        photo1 = new Photo("Apples");
-        photo2 = new Photo("Bananas");
-        photo3 = new Photo("Cherries");
+        Photo photo1 = new Photo("Apples");
+        Photo photo2 = new Photo("Bananas");
+        Photo photo3 = new Photo("Cherries");
         album = new Album();
         album.addPhoto(photo1);
         album.addPhoto(photo2);

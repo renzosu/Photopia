@@ -26,3 +26,18 @@ In the context of a photo album viewer application:
 - As a user, I want to be able to load my album from file.
 - As a user, I want to be given the option to save my album to file when I quit.
 - As a user, I want to be given the option to load my album from file when I start.
+
+## Phase 4: Task 2
+
+I have chosen to implement the following:
+
+- Test and design a class in the model package that is robust.
+- Photo is the class with the method that throws a checked exception.
+- PhotoTest has a test case each for expected and not expected conditions.
+
+## Phase 4: Task 3
+
+If I had more time, I would refactor the project by:
+
+- Removing the uni-directional relationship from UIApp to Photo to decreasing coupling,
+as this was possible in the MainFrame class. 
