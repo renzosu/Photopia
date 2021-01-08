@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 
 /**
- * Represents the main window that opens the photo album App
+ * Represents the main window that opens the photo album Application
  * Modelled based on PhotoAlbumBase, https://github.students.cs.ubc.ca/CPSC210/PhotoAlbumBase.git
  */
 
